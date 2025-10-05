@@ -4,15 +4,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/robos")
+@RequestMapping("/acmebots")
 public class RoboController {
     
-    @GetMapping
+    @GetMapping("/listarobos")
     public List<Robo> listarRobos() {
         return Robo.getRobos();
     }
-    
-    @PostMapping
+    @PostMapping("/cadastrarobos")
     public Robo criarRobo(@RequestBody Robo robo) {
         return new Robo(
             robo.getModelo(),
@@ -24,26 +23,24 @@ public class RoboController {
         );
     }
 
-    @GetMapping("/buscar")
+    @GetMapping("/buscarobos")
     public Robo buscarRoboPorId(@RequestParam int id) {
         return Robo.buscarRoboPorId(id);
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping("/atualizarobos")
     public Robo atualizarRobo(@RequestParam int id, @RequestBody Robo robo) {
         robo.setId(id);
         Robo.atualizarRobo(robo);
         return robo;
     }
     
-    @DeleteMapping("/deletar")
+    @DeleteMapping("/deletarobos")
     public void deletarRobo(@RequestParam int id) {
         Robo.removerRoboPorId(id);
     }
 
-    // ADICIONAR ESTES NOVOS ENDPOINTS:
-
-    @PutMapping("/devolver")
+    @PutMapping("/devolverobos")
     public String devolverRobo(@RequestParam int id, @RequestParam boolean temDefeito) {
         boolean sucesso = Robo.devolverRobo(id, temDefeito);
         
@@ -57,7 +54,7 @@ public class RoboController {
         return "Erro: Robô não encontrado ou não está vendido";
     }
 
-    @PutMapping("/restaurar")
+    @PutMapping("/restaurarobos")
     public String restaurarRobo(@RequestParam int id) {
         boolean sucesso = Robo.restaurarRobo(id);
         
@@ -67,17 +64,19 @@ public class RoboController {
         return "Erro: Robô não encontrado ou não está devolvido";
     }
 
-    @GetMapping("/disponiveis")
+    @GetMapping("/robosdisponiveis")
     public List<Robo> listarRobosDisponiveis() {
         return Robo.getRobos().stream()
                 .filter(robo -> robo.getStatus() == StatusRobo.DISPONIVEL)
                 .toList();
     }
 
-    @GetMapping("/devolvidos")
+    @GetMapping("/robosdevolvidos")
     public List<Robo> listarRobosDevolvidos() {
         return Robo.getRobos().stream()
                 .filter(robo -> robo.getStatus() == StatusRobo.DEVOLVIDO)
                 .toList();
     }
+
+    
 }

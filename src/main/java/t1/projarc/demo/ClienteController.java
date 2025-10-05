@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/acmebots")
 public class ClienteController {
     
-    @GetMapping
+    @GetMapping("/listaclientes")
     public List<Cliente> listarClientes() {
         return Cliente.getClientes();
     }
-    
-    @PostMapping
+
+    @PostMapping("/cadastrarcliente")
     public Cliente criarCliente(@RequestBody Cliente cliente) {
         return new Cliente(cliente.getNome(), cliente.getEmail());
     }
-    
-    @GetMapping("/buscar")
-    public Cliente buscarCliente(@RequestParam int id) {
-        return Cliente.buscarClientePorId(id);
+
+    @GetMapping("/consultacliente")
+    public Cliente buscarCliente(@RequestParam int codigo) {
+        return Cliente.buscarClientePorId(codigo);
     }
-    
-    @PutMapping("/atualizar")
-    public Cliente atualizarCliente(@RequestParam int id, @RequestBody Cliente cliente) {
-        cliente.setId(id);
+
+    @PutMapping("/atualizacliente")
+    public Cliente atualizarCliente(@RequestParam int codigo, @RequestBody Cliente cliente) {
+        cliente.setId(codigo);
         Cliente.atualizarCliente(cliente);
         return cliente;
     }
-    
-    @DeleteMapping("/deletar")
+
+    @DeleteMapping("/deletacliente")
     public void deletarCliente(@RequestParam int id) {
         Cliente.removerPorId(id);
         
