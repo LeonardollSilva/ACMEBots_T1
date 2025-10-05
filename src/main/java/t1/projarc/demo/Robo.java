@@ -200,4 +200,57 @@ public class Robo {
         }
         return false;
     }
+    private static double metrosParaMilhas(double metros) {
+        return metros * 0.000621371;
+    }
+    private static double quilosParaLibras(double quilos) {
+        return quilos * 2.20462;
+    }
+    private static double celsiusParaFahrenheit(double celsius) {
+        return (celsius * 9.0/5.0) + 32;
+    }
+    private static double fahrenheitParaCelsius(double fahrenheit) {
+        return (fahrenheit - 32) * 5.0/9.0;
+    }
+    private static double librasParaQuilos(double libras) {
+        return libras / 2.20462;
+    }
+    private static double milhasParaMetros(double milhas) {
+        return milhas / 0.000621371;
+    }
+
+    public static List<Robo> getRobosDisponiveisMetric(double autonomiaMinimaMetros, double cargaMinimaQuilos, double temperaturaMinimaCelsius, double temperaturaMaximaCelsius) {
+        verificarRobosVendidosParaDescarte();
+        
+        List<Robo> listaDeRobosDisponiveis = new ArrayList<>();
+        
+        for (int i = 0; i < contador; i++) {
+            Robo robo = robos[i];
+            if (robo.getStatus() == StatusRobo.DISPONIVEL &&
+                robo.getAutonomia() >= autonomiaMinimaMetros &&
+                robo.getCarga() >= cargaMinimaQuilos &&
+                robo.getTemperatura() >= temperaturaMinimaCelsius &&
+                robo.getTemperatura() <= temperaturaMaximaCelsius) {
+                listaDeRobosDisponiveis.add(robo);
+            }
+        }
+        return listaDeRobosDisponiveis;
+    }
+    public static List<Robo> getRobosDisponiveisImperial(double autonomiaMinimaMilhas, double cargaMaximaLibras, double temperaturaMinimaFahrenheit, double temperaturaMaximaFahrenheit) {
+        verificarRobosVendidosParaDescarte();
+        
+        List<Robo> listaDeRobosDisponiveis = new ArrayList<>();
+        
+        for (int i = 0; i < contador; i++) {
+            Robo robo = robos[i];
+            if (robo.getStatus() == StatusRobo.DISPONIVEL &&
+                metrosParaMilhas(robo.getAutonomia()) >= autonomiaMinimaMilhas &&
+                quilosParaLibras(robo.getCarga()) >= cargaMaximaLibras &&
+                celsiusParaFahrenheit(robo.getTemperatura()) >= temperaturaMinimaFahrenheit &&
+                celsiusParaFahrenheit(robo.getTemperatura()) <= temperaturaMaximaFahrenheit) {
+                listaDeRobosDisponiveis.add(robo);
+            }
+        }
+        return listaDeRobosDisponiveis;
+    }
 }
