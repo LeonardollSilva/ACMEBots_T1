@@ -13,26 +13,22 @@ public class Venda {
     private static int contador = 0;
     private static final int TAMANHO_MAXIMO = 100;
     private static Venda[] vendas = new Venda[TAMANHO_MAXIMO];
+    
 
     public Venda() {
     }
-    
     public Venda(Robo robo, Cliente cliente) {
         this.robo = robo;
         this.cliente = cliente;
         this.dataVenda = LocalDate.now();
         this.valorVenda = robo.getValor() + (robo.getAutonomia() * 1) + (robo.getCarga() * 1) + (robo.getTemperatura() * 0.5);
-        if(valorVenda > 10000){
+        if(valorVenda > 1000){
             this.valorVenda = valorVenda * 0.95;
         }
         
         this.id = proximoId++;
-        
-        // Atualizar status do robô
         robo.setStatus(StatusRobo.VENDIDO);
         robo.setDataVenda(this.dataVenda);
-        
-        // Adicionar ao array
         if (contador < TAMANHO_MAXIMO) {
             vendas[contador] = this;
             contador++;
@@ -87,4 +83,17 @@ public class Venda {
         }
         return null;
     }
+    public static boolean removerVendaPorId(int id) {
+    for (int i = 0; i < contador; i++) {
+        if (vendas[i].getId() == id) {
+            for (int j = i; j < contador - 1; j++) {
+                vendas[j] = vendas[j + 1];
+            }
+            vendas[contador - 1] = null;
+            contador--;
+            return true;
+        }
+    }
+    return false;
+}
 }
