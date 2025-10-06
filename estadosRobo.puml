@@ -1,0 +1,22 @@
+@startuml EstadosRobo
+[*] --> DISPONIVEL : criarRobo()
+DISPONIVEL --> VENDIDO : realizarVenda()
+VENDIDO --> DISPONIVEL : cancelarVenda()
+VENDIDO --> DESCARTADO : problemaDetectado()
+DESCARTADO --> [*] : removerSistema()
+
+state DISPONIVEL {
+  DISPONIVEL : Robô pronto para venda
+  DISPONIVEL : modelo = t800
+}
+
+state VENDIDO {
+  VENDIDO : Robô vendido a cliente
+  VENDIDO : modelo = t800
+}
+
+state DESCARTADO {
+  DESCARTADO : Robô com problemas
+  DESCARTADO : modelo = t800
+}
+@enduml
