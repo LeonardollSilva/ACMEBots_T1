@@ -27,4 +27,15 @@ public class VendaController {
     public Venda buscarVenda(@RequestParam int id) {
         return Venda.buscarVendaPorId(id);
     }
+    
+    @DeleteMapping("/cadastro/cancelavenda")
+    public boolean cancelarVenda(@RequestParam int numero) {
+        Venda venda = Venda.buscarVendaPorId(numero);
+        if (venda != null) {
+            venda.getRobo().setStatus(StatusRobo.DISPONIVEL);
+            venda.getRobo().setDataVenda(null);
+            return true;
+        }
+        return false;
+    }
 }
