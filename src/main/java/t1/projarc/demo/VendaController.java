@@ -3,28 +3,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vendas")
+@RequestMapping("/acmebots")
 public class VendaController {
 
-    @GetMapping
+    @GetMapping("/listavendas")
     public List<Venda> listarVendas() {
         return Venda.getVendas();
     }
     
-    @PostMapping
-    public Venda realizarVenda(@RequestParam int clienteId, @RequestParam int roboId) {
+    @PostMapping("/cadastro/cadvenda")  
+    public boolean realizarVenda(@RequestParam int clienteId, @RequestParam int roboId) {
         Cliente cliente = Cliente.buscarClientePorId(clienteId);
         Robo robo = Robo.buscarRoboPorId(roboId);
         
-        if (cliente != null && robo != null && robo.getStatus() == StatusRobo.DISPONIVEL && 
-        robo.getStatus() != StatusRobo.DESCARTADO) {
-            return new Venda(robo, cliente);
+        if (cliente != null && robo != null && robo.getStatus() == StatusRobo.DISPONIVEL) {
+            new Venda(robo, cliente);
+            return true;
         }
-        return null;
+        return false;
     }
     
-    @GetMapping("/buscar")
+    @GetMapping("/buscarvendas")
     public Venda buscarVenda(@RequestParam int id) {
         return Venda.buscarVendaPorId(id);
+    }
+    
+    @DeleteMapping("/cadastro/cancelavenda")
+    public boolean cancelarVenda(@RequestParam int numero) {
+        Venda venda = Venda.buscarVendaPorId(numero);
+        if (venda != null) {
+            venda.getRobo().setStatus(StatusRobo.DISPONIVEL);
+            venda.getRobo().setDataVenda(null);
+            return true;
+        }
+        return false;
     }
 }
